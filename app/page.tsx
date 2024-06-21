@@ -18,29 +18,29 @@ export default function Home() {
 				<MaxWidthWrapper className="pb-24 pt-10 lg:grid-cols-3 sm:pb-32 lg:gap-x-0 xl:gap-x-8 lg:pt-20 xl:pt-24 lg:pb-52 lg:flex-row sm:flex">
 					<div className="col-span-2 px-4 lg:px-0 lg:pt-2">
 						<div className="relative mx-auto text-center lg:text-left flex flex-col items-center lg:items-start">
-							<div className="absolute w-28 left-0 top-0 hidden lg:block">
+							<div className="absolute w-28 left-0 -top-20 hidden lg:block">
 								<Image
 									src={"/assets/snake-1.png"}
-									width={55}
-									height={55}
+									width={100}
+									height={100}
 									alt="snake"
 									className="cursor-pointer"
 								/>
 							</div>
-							<h1 className="relative w-fit tracking-tight text-balance mt-16 font-bold !leading-tight text-gray-900 text-5xl md:text-6xl lg:text-7xl">
+							<h1 className="relative w-fit tracking-tight text-balance mt-12 font-bold !leading-tight text-gray-900 text-5xl md:text-6xl lg:text-7xl">
 								Your Image on a{" "}
 								<span className="bg-teal-400 text-white px-2 rounded-xl">
 									Custom
 								</span>{" "}
 								Phone Case
 							</h1>
-							<p className="mt-4 text-lg lg:pr-10 max-w-prose text-center lg:text-left text-balance md:text-wrap">
+							<p className="mt-6 text-lg lg:pr-10 max-w-prose text-center lg:text-left text-balance md:text-wrap">
 								Capture your favorite memories with your own,{" "}
 								<span className="font-semibold">one-of-one</span> phone case.
 								CaseCobra allows you to protect your memories, not just your
 								phone case.
 							</p>
-							<ul className="mt-4 space-y-2 text-left font-medium flex flex-col items-center sm:items-start">
+							<ul className="mt-6 space-y-2 text-left font-medium flex flex-col items-center sm:items-start">
 								<div className="space-y-2">
 									<li className="flex gap-1.5 items-center text-left">
 										<Check className="h-5 w-5 shrink-0 text-teal-500" />
@@ -56,7 +56,7 @@ export default function Home() {
 									</li>
 								</div>
 							</ul>
-							<div className=" mt-4 flex flex-col sm:flex-row justify-center items-center sm:items-start gap-5">
+							<div className=" mt-6 flex flex-col sm:flex-row justify-center items-center sm:items-start gap-5">
 								<div className="flex -space-x-4">
 									<UserList
 										imageUrls={userImages}
