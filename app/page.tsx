@@ -6,6 +6,7 @@ import UserList from "@/components/UserList";
 import Phone from "@/components/Phone";
 import { Icons } from "@/components/Icons";
 import UserReviews from "@/components/UserReviews";
+import Reviews from "@/components/Reviews";
 
 export default function Home() {
 	const userImages = [
@@ -90,7 +91,7 @@ export default function Home() {
 								className="absolute w-20 -left-6 -bottom-6 select-none"
 								alt="Line"
 							/>
-							<Phone imgSrc={"/assets/1.jpg"} className="w-64" />
+							<Phone imgSrc={"/assets/testimonials/1.jpg"} className="w-64" />
 						</div>
 					</div>
 				</MaxWidthWrapper>
@@ -129,11 +130,14 @@ export default function Home() {
 							className={"rounded-full object-cover"}
 							user="Sarah"
 							reviewText="I love my new case!"
-							restText="and the print quality is amazing"
+							restText="and the print quality is amazing."
 							highlightText="The case feels great in my hand, "
 						/>
 					</div>
 				</MaxWidthWrapper>
+				<div className="pt-16">
+					<Reviews />
+				</div>
 			</section>
 		</div>
 	);

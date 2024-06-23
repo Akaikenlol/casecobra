@@ -19,3 +19,14 @@ export interface PhoneProps extends HTMLAttributes<HTMLDivElement> {
 	className?: string;
 	dark?: boolean;
 }
+
+export interface ReviewColumnProps {
+	reviews: string[];
+	className?: string;
+	reviewClassName?: (reviewIndex: number) => string;
+	msPerPixel?: number;
+}
+
+export interface ReviewProps extends HTMLAttributes<HTMLDivElement> {
+	imgSrc: string;
+}
