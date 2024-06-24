@@ -2,6 +2,7 @@ import { ReviewProps } from "@/constants";
 import { cn } from "@/lib/utils";
 import { POSSIBLE_ANIMATION_DELAYS } from "@/types";
 import React from "react";
+import Phone from "./Phone";
 
 const Review = ({ imgSrc, className, ...props }: ReviewProps) => {
 	const animationDelay =
@@ -17,7 +18,9 @@ const Review = ({ imgSrc, className, ...props }: ReviewProps) => {
 			)}
 			style={{ animationDelay }}
 			{...props}
-		></div>
+		>
+			<Phone imgSrc={imgSrc} />
+		</div>
 	);
 };
 

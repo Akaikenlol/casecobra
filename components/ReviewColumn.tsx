@@ -13,13 +13,13 @@ const ReviewColumn = ({
 }: ReviewColumnProps) => {
 	const columnRef = useRef<HTMLDivElement | null>(null);
 	const [columnHeight, setColumnHeight] = useState(0);
-	const duration = `${columnHeight * (msPerPixel ?? 0)}ms`;
+	const duration = `${columnHeight * msPerPixel!}ms`;
 
 	useEffect(() => {
 		if (!columnRef.current) return;
 
 		const resizeObserver = new window.ResizeObserver(() => {
-			setColumnHeight(columnRef.current?.clientHeight ?? 0);
+			setColumnHeight(columnRef.current?.offsetHeight ?? 0);
 		});
 
 		resizeObserver.observe(columnRef.current);
@@ -36,7 +36,11 @@ const ReviewColumn = ({
 			style={{ "--marquee-duration": duration } as React.CSSProperties}
 		>
 			{reviews.concat(reviews).map((imgSrc, reviewIndex) => (
-				<Review imgSrc={""} />
+				<Review
+					key={reviewIndex}
+					className={reviewClassName?.(reviewIndex % reviews.length)}
+					imgSrc={imgSrc}
+				/>
 			))}
 		</div>
 	);

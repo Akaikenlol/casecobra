@@ -1,10 +1,10 @@
 export const PHONES = [
-	"/testimonials/1.png",
-	"/testimonials/2.png",
-	"/testimonials/3.png",
-	"/testimonials/4.png",
-	"/testimonials/5.png",
-	"/testimonials/6.png",
+	"/assets/testimonials/1.jpg",
+	"/assets/testimonials/2.jpg",
+	"/assets/testimonials/3.jpg",
+	"/assets/testimonials/4.jpg",
+	"/assets/testimonials/5.jpg",
+	"/assets/testimonials/6.jpg",
 ];
 
 export const POSSIBLE_ANIMATION_DELAYS = [
