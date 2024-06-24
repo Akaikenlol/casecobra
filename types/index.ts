@@ -15,3 +15,10 @@ export const POSSIBLE_ANIMATION_DELAYS = [
 	"0.4s",
 	"0.5s",
 ];
+
+export const userImages = [
+	"/assets/users/user-1.png",
+	"/assets/users/user-2.png",
+	"/assets/users/user-3.png",
+	"/assets/users/user-4.jpg",
+];
