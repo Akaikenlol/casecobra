@@ -8,5 +8,6 @@ export function splitArray<T>(array: Array<T>, numParts: number) {
 		}
 		result[index].push(array[i]);
 	}
+
 	return result;
 }
