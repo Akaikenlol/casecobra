@@ -17,6 +17,7 @@ const Footer = () => {
 						<div className="flex space-x-8">
 							{footerLinks.map((link, index) => (
 								<Link
+									key={index}
 									href={link.url}
 									className="text-sm text-muted-foreground hover:text-gray-600"
 								>
