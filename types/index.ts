@@ -22,3 +22,16 @@ export const userImages = [
 	"/assets/users/user-3.png",
 	"/assets/users/user-4.jpg",
 ];
+
+export const qualityInfo = [
+	"Scratch and fingerprint resistant coating",
+	"Wireless charging compatible",
+	"High-quality silicone material",
+	"5 year print warranty",
+];
+
+export const footerLinks = [
+	{ title: "Terms", url: "/terms" },
+	{ title: "Privacy Policy", url: "/privacy-policy" },
+	{ title: "Cookies Policy", url: "/cookies-policy" },
+];
