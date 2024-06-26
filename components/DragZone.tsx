@@ -1,17 +1,23 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import Dropzone, { FileRejection } from "react-dropzone";
 import { Input } from "./ui/input";
+import { Image, Loader2, MousePointerSquareDashed } from "lucide-react";
+import { Progress } from "./ui/progress";
 
 const DragZone = () => {
 	const [isDragOver, setIsDragOver] = useState<boolean>(false);
+	const [uploadProgress, setUploadProgress] = useState<number>(45);
 
 	const onDropRejected = () => {};
 	const onDropAccepted = () => {
 		console.log("Accepted");
 	};
+
+	const isUploading = true;
+	const [isPending, startTransition] = useTransition();
 
 	return (
 		<div
@@ -39,7 +45,35 @@ const DragZone = () => {
 							className="w-full h-full flex-1 flex flex-col items-center justify-center"
 							{...getRootProps()}
 						>
-							<Input className="focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 min-h-[calc(100vh-15rem-50px)]" />
+							<div className="relative w-full">
+								<Input className="focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 min-h-[calc(100vh-15rem-50px)] pointer-events-none rounded-xl" />
+								<div className="absolute inset-0 flex flex-col items-center justify-center">
+									{isDragOver ? (
+										<MousePointerSquareDashed className="h-6 w-6 text-zinc-500 mb-2" />
+									) : isUploading || isPending ? (
+										<Loader2 className="animate-spin h-6 w-6 text-zinc-500 mb-2" />
+									) : (
+										<Image className="h-6 w-6 text-zinc-500 mb-2" />
+									)}
+									<div className="flex flex-col justify-center mb-2 text-sm text-zinc-700">
+										{isUploading ? (
+											<div className="flex flex-col items-center">
+												<p>Uploading...</p>
+												<Progress
+													value={uploadProgress}
+													className="mt-2 w-40 h-2 bg-gray-300"
+												/>
+											</div>
+										) : isPending ? (
+											<div></div>
+										) : isDragOver ? (
+											<span></span>
+										) : (
+											<span></span>
+										)}
+									</div>
+								</div>
+							</div>
 						</div>
 					)}
 				</Dropzone>
