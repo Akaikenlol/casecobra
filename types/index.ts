@@ -35,3 +35,21 @@ export const footerLinks = [
 	{ title: "Privacy Policy", url: "/privacy-policy" },
 	{ title: "Cookies Policy", url: "/cookies-policy" },
 ];
+
+export const STEPS = [
+	{
+		name: "ステップー１: 画像を追加する",
+		description: "ケースの画像を選択してください",
+		url: "/upload",
+	},
+	{
+		name: "ステップー２: デザインをカスタマイズ",
+		description: "ケースを自分のものにする",
+		url: "/design",
+	},
+	{
+		name: "ステップー３: まとめ",
+		description: "最終デザインを確認する",
+		url: "/preview",
+	},
+];
