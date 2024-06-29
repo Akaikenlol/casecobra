@@ -30,3 +30,13 @@ export interface ReviewColumnProps {
 export interface ReviewProps extends HTMLAttributes<HTMLDivElement> {
 	imgSrc: string;
 }
+
+export interface searchParamsProps {
+	[key: string]: string | string[] | undefined;
+}
+
+export interface DesignConfiguratorProps {
+	configId: string;
+	imageUrl: string;
+	imageDimension: { width: number; height: number };
+}
