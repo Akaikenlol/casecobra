@@ -10,6 +10,9 @@ import HandleComponent from "./HandleComponent";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { RadioGroup } from "@headlessui/react";
 import { COLORS } from "@/types";
+import { Label } from "./ui/label";
+import { Radio } from "lucide-react";
+import { getTailwindClasses } from "@/lib/getTailwindClasses";
 
 const DesignConfigurator = ({
 	configId,
@@ -39,9 +42,9 @@ const DesignConfigurator = ({
 					<div className="absolute z-40 inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px] shadow-[0_0_0_99999px_rgba(229,231,235,0.6)]" />
 					<div
 						className={cn(
-							"absolute inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px]",
-							"bg-zinc-950"
+							"absolute inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px]"
 						)}
+						style={{ backgroundColor: options.color.value }}
 					/>
 				</div>
 				<Rnd
@@ -86,8 +89,39 @@ const DesignConfigurator = ({
 						<div className="relative mt-4 h-full flex flex-col justify-between">
 							<RadioGroup
 								value={options.color}
-								onChange={() => {}}
-							></RadioGroup>
+								onChange={(val) => {
+									setOptions((prev) => ({
+										...prev,
+										color: val,
+									}));
+								}}
+							>
+								<Label>Color: {options.color.label}</Label>
+								<div className="mt-3 flex items-center space-x-3">
+									{COLORS.map((color) => (
+										<RadioGroup.Option
+											key={color.label}
+											value={color}
+											style={{ borderColor: color.value }}
+											className={({ active, checked }) =>
+												cn(
+													"relative -m-0.5 flex cursor-pointer items-center justify-center rounded-full p-1 active:ring-1 focus:ring-1 active:outline-none focus:outline-none border-1 border-transparent",
+													{
+														border: active || checked,
+													}
+												)
+											}
+										>
+											<span
+												style={{
+													backgroundColor: color.value,
+												}}
+												className="h-8 w-8 rounded-full border border-black border-opacity-10"
+											/>
+										</RadioGroup.Option>
+									))}
+								</div>
+							</RadioGroup>
 						</div>
 					</div>
 				</ScrollArea>

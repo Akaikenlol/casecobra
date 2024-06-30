@@ -55,7 +55,8 @@ export const STEPS = [
 ];
 
 export const COLORS = [
-	{ label: "Black", value: "black", tw: "zinc-900" },
-	{ label: "Blue", value: "blue", tw: "blue-950" },
-	{ label: "Rose", value: "rose", tw: "rose-950" },
+	{ label: "Black", value: "#18181B", tw: "zinc-900" },
+	{ label: "Slate", value: "#CBD5E1", tw: "slate-500" },
+	{ label: "Blue", value: "#172554", tw: "blue-950" },
+	{ label: "Rose", value: "#4C0519", tw: "rose-950" },
 ] as const;
