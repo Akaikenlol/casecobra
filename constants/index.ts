@@ -40,3 +40,8 @@ export interface DesignConfiguratorProps {
 	imageUrl: string;
 	imageDimension: { width: number; height: number };
 }
+
+export interface baseToBlobProps {
+	base64: string;
+	mimeType: string;
+}

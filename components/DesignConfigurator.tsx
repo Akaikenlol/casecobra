@@ -1,8 +1,8 @@
 "use client";
 
 import { DesignConfiguratorProps } from "@/constants";
-import React, { useState } from "react";
-import Image from "next/image";
+import React, { useRef, useState } from "react";
+import NextImage from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { cn } from "@/lib/utils";
 import { Rnd } from "react-rnd";
@@ -15,21 +15,21 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuRadioItem,
-	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
-import { DropdownMenuRadioGroup } from "@radix-ui/react-dropdown-menu";
 import { ArrowRight, Check, ChevronsUpDown, Radio } from "lucide-react";
 import { formatPrice } from "@/lib/formatPrice";
+import { base64ToBlob } from "@/lib/base64ToBlob";
+import { useUploadThing } from "@/lib/uploadthings";
+import { useToast } from "./ui/use-toast";
 
 const DesignConfigurator = ({
 	configId,
 	imageUrl,
 	imageDimension,
 }: DesignConfiguratorProps) => {
+	const { toast } = useToast();
 	const [options, setOptions] = useState<{
 		color: (typeof COLORS)[number];
 		model: (typeof MODELS.options)[number];
@@ -42,15 +42,87 @@ const DesignConfigurator = ({
 		finish: FINISHES.options[0],
 	});
 
+	const [renderedDimension, setRenderedDimension] = useState({
+		width: imageDimension.width / 4,
+		height: imageDimension.height / 4,
+	});
+
+	const [renderPosition, setRenderPosition] = useState({
+		x: 150,
+		y: 105,
+	});
+
+	const phoneCaseRef = useRef<HTMLDivElement>(null);
+	const containerRef = useRef<HTMLDivElement>(null);
+
+	const { startUpload } = useUploadThing("imageUploader");
+
+	async function saveConfiguration() {
+		try {
+			const {
+				left: caseLeft,
+				top: caseTop,
+				width,
+				height,
+			} = phoneCaseRef.current!.getBoundingClientRect();
+			const { left: containerLeft, top: containerTop } =
+				containerRef.current!.getBoundingClientRect();
+
+			const leftOffset = caseLeft - containerLeft;
+			const topOffset = caseTop - containerTop;
+
+			const actualX = renderPosition.x - leftOffset;
+			const actualY = renderPosition.y - topOffset;
+
+			const canvas = document.createElement("canvas");
+			canvas.width = width;
+			canvas.height = height;
+			const ctx = canvas.getContext("2d");
+
+			const userImage = new Image();
+			userImage.crossOrigin = "anonymous";
+			userImage.src = imageUrl;
+			await new Promise((resolve) => (userImage.onload = resolve));
+
+			ctx?.drawImage(
+				userImage,
+				actualX,
+				actualY,
+				renderedDimension.width,
+				renderedDimension.height
+			);
+
+			const base64 = canvas.toDataURL();
+			console.log(base64);
+			const base64Data = base64.split(",")[1];
+
+			const blob = base64ToBlob(base64Data, "image/png");
+			const file = new File([blob], "filename.png", { type: "image/png" });
+
+			await startUpload([file], { configId });
+		} catch (error) {
+			toast({
+				title: "Something went wrong",
+				description:
+					"There was a problem saving your config, please try again later.",
+				variant: "destructive",
+			});
+		}
+	}
+
 	return (
 		<div className="relative mt-20 grid grid-cols-1 lg:grid-cols-3 mb-20 pb-20">
-			<div className="relative h-[37.5rem] overflow-hidden col-span-2 w-full max-w-4xl flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-12 text-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+			<div
+				ref={containerRef}
+				className="relative h-[37.5rem] overflow-hidden col-span-2 w-full max-w-4xl flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 p-12 text-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+			>
 				<div className="relative w-60 bg-opacity-50 pointer-events-none aspect-[896/1831]">
 					<AspectRatio
+						ref={phoneCaseRef}
 						ratio={896 / 1831}
 						className="pointer-events-none relative z-50 aspect-[896/1831] w-full"
 					>
-						<Image
+						<NextImage
 							src={"/assets/phone-template.png"}
 							width={imageDimension.width}
 							height={imageDimension.height}
@@ -73,6 +145,18 @@ const DesignConfigurator = ({
 						height: imageDimension.height / 4,
 						width: imageDimension.width / 4,
 					}}
+					onResizeStop={(_, __, ref, ___, { x, y }) => {
+						setRenderPosition({
+							height: parseInt(ref.style.height.slice(0, -2)),
+							width: parseInt(ref.style.width.slice(0, -2)),
+						});
+
+						setRenderPosition({ x, y });
+					}}
+					onDragStop={(_, data) => {
+						const { x, y } = data;
+						setRenderPosition({ x, y });
+					}}
 					lockAspectRatio
 					className="absolute z-20 border-[3px] border-teal-500"
 					resizeHandleComponent={{
@@ -83,7 +167,7 @@ const DesignConfigurator = ({
 					}}
 				>
 					<div className="relative w-full h-full">
-						<Image
+						<NextImage
 							src={imageUrl}
 							width={imageDimension.width}
 							height={imageDimension.height}
@@ -263,7 +347,11 @@ const DesignConfigurator = ({
 										100
 								)}
 							</p>
-							<Button size={"sm"} className="w-full">
+							<Button
+								size={"sm"}
+								className="w-full"
+								onClick={() => saveConfiguration()}
+							>
 								Continue
 								<ArrowRight className="h-4 w-4 ml-1.5 inline" />
 							</Button>
