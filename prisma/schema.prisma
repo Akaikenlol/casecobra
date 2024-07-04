@@ -35,8 +35,10 @@ enum CaseFinish {
 enum CaseColor {
   black
   blue
-  rose
+  red
+  white
 }
+
 model Configuration {
   id              String  @id @default(cuid())
   width           Int
