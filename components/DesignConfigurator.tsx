@@ -1,6 +1,6 @@
 "use client";
 
-import { DesignConfiguratorProps } from "@/constants";
+import { DesignConfiguratorProps, saveConfigProps } from "@/constants";
 import React, { useRef, useState } from "react";
 import NextImage from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -23,6 +23,12 @@ import { formatPrice } from "@/lib/formatPrice";
 import { base64ToBlob } from "@/lib/base64ToBlob";
 import { useUploadThing } from "@/lib/uploadthings";
 import { useToast } from "./ui/use-toast";
+import { useMutation } from "@tanstack/react-query";
+import {
+	saveConfig as _saveConfig,
+	saveConfig,
+} from "@/lib/actions/design.action";
+import { useRouter } from "next/navigation";
 
 const DesignConfigurator = ({
 	configId,
@@ -30,6 +36,26 @@ const DesignConfigurator = ({
 	imageDimension,
 }: DesignConfiguratorProps) => {
 	const { toast } = useToast();
+	const router = useRouter();
+
+	const {} = useMutation({
+		mutationKey: ["save-config"],
+		mutationFn: async (args: saveConfigProps) => {
+			await Promise.all([saveConfiguration(), _saveConfig(args)]);
+		},
+		onError: () => {
+			toast({
+				title: "Something went wrong",
+				description:
+					"There was a problem saving your config, please try again later.",
+				variant: "destructive",
+			});
+		},
+		onSuccess: () => {
+			router.push(`/configure/preview?id=${configId}`);
+		},
+	});
+
 	const [options, setOptions] = useState<{
 		color: (typeof COLORS)[number];
 		model: (typeof MODELS.options)[number];
@@ -350,7 +376,15 @@ const DesignConfigurator = ({
 							<Button
 								size={"sm"}
 								className="w-full"
-								onClick={() => saveConfiguration()}
+								onClick={() =>
+									saveConfig({
+										configId,
+										color: options.color.value,
+										finish: options.finish.value,
+										material: options.material.value,
+										model: options.model.value,
+									})
+								}
 							>
 								Continue
 								<ArrowRight className="h-4 w-4 ml-1.5 inline" />
