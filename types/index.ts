@@ -39,19 +39,34 @@ export const footerLinks = [
 ];
 
 export const STEPS = [
+	// {
+	// 	name: "ステップー１: 画像を追加する",
+	// 	description: "ケースの画像を選択してください",
+	// 	url: "/upload",
+	// },
+	// {
+	// 	name: "ステップー２: デザインをカスタマイズ",
+	// 	description: "ケースを自分のものにする",
+	// 	url: "/design",
+	// },
+	// {
+	// 	name: "ステップー３: まとめ",
+	// 	description: "最終デザインを確認する",
+	// 	url: "/preview",
+	// },
 	{
-		name: "ステップー１: 画像を追加する",
-		description: "ケースの画像を選択してください",
+		name: "Step 1: Add Image",
+		description: "Select an image for your case",
 		url: "/upload",
 	},
 	{
-		name: "ステップー２: デザインをカスタマイズ",
-		description: "ケースを自分のものにする",
+		name: "Step 2: Customize Design",
+		description: "Make the case your own",
 		url: "/design",
 	},
 	{
-		name: "ステップー３: まとめ",
-		description: "最終デザインを確認する",
+		name: "Step 3: Summary",
+		description: "Review your final design",
 		url: "/preview",
 	},
 ];
@@ -69,7 +84,7 @@ export const COLORS = [
 ] as const;
 
 export const MODELS = {
-	name: "models",
+	name: "model",
 	options: [
 		{ label: "iPhone X", value: "iphonex" },
 		{ label: "iPhone 11", value: "iphone11" },

@@ -2,6 +2,7 @@ import {
 	CaseColor,
 	CaseFinish,
 	CaseMaterial,
+	Configuration,
 	PhoneModel,
 } from "@prisma/client";
 import { HTMLAttributes } from "react";
@@ -58,4 +59,8 @@ export interface saveConfigProps {
 	material: CaseMaterial;
 	model: PhoneModel;
 	configId: string;
+}
+
+export interface DesignPreviewProps {
+	configuration: Configuration;
 }
