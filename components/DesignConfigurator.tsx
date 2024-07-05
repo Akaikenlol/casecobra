@@ -1,6 +1,6 @@
 "use client";
 
-import { DesignConfiguratorProps, saveConfigProps } from "@/constants";
+import { saveConfigProps, DesignConfiguratorProps } from "@/constants";
 import React, { useRef, useState } from "react";
 import NextImage from "next/image";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -38,7 +38,7 @@ const DesignConfigurator = ({
 	const { toast } = useToast();
 	const router = useRouter();
 
-	const {} = useMutation({
+	const { mutate: saveConfig, isPending } = useMutation({
 		mutationKey: ["save-config"],
 		mutationFn: async (args: saveConfigProps) => {
 			await Promise.all([saveConfiguration(), _saveConfig(args)]);
@@ -46,8 +46,7 @@ const DesignConfigurator = ({
 		onError: () => {
 			toast({
 				title: "Something went wrong",
-				description:
-					"There was a problem saving your config, please try again later.",
+				description: "There was an error on our end. Please try again.",
 				variant: "destructive",
 			});
 		},
@@ -63,7 +62,7 @@ const DesignConfigurator = ({
 		finish: (typeof FINISHES.options)[number];
 	}>({
 		color: COLORS[0],
-		model: MODELS.options[5],
+		model: MODELS.options[0],
 		material: MATERIAL.options[0],
 		finish: FINISHES.options[0],
 	});
@@ -73,9 +72,9 @@ const DesignConfigurator = ({
 		height: imageDimension.height / 4,
 	});
 
-	const [renderPosition, setRenderPosition] = useState({
+	const [renderedPosition, setRenderedPosition] = useState({
 		x: 150,
-		y: 105,
+		y: 205,
 	});
 
 	const phoneCaseRef = useRef<HTMLDivElement>(null);
@@ -91,14 +90,15 @@ const DesignConfigurator = ({
 				width,
 				height,
 			} = phoneCaseRef.current!.getBoundingClientRect();
+
 			const { left: containerLeft, top: containerTop } =
 				containerRef.current!.getBoundingClientRect();
 
 			const leftOffset = caseLeft - containerLeft;
 			const topOffset = caseTop - containerTop;
 
-			const actualX = renderPosition.x - leftOffset;
-			const actualY = renderPosition.y - topOffset;
+			const actualX = renderedPosition.x - leftOffset;
+			const actualY = renderedPosition.y - topOffset;
 
 			const canvas = document.createElement("canvas");
 			canvas.width = width;
@@ -119,21 +119,30 @@ const DesignConfigurator = ({
 			);
 
 			const base64 = canvas.toDataURL();
-			console.log(base64);
 			const base64Data = base64.split(",")[1];
 
 			const blob = base64ToBlob(base64Data, "image/png");
 			const file = new File([blob], "filename.png", { type: "image/png" });
 
 			await startUpload([file], { configId });
-		} catch (error) {
+		} catch (err) {
 			toast({
 				title: "Something went wrong",
 				description:
-					"There was a problem saving your config, please try again later.",
+					"There was a problem saving your config, please try again.",
 				variant: "destructive",
 			});
 		}
+	}
+
+	function base64ToBlob(base64: string, mimeType: string) {
+		const byteCharacters = atob(base64);
+		const byteNumbers = new Array(byteCharacters.length);
+		for (let i = 0; i < byteCharacters.length; i++) {
+			byteNumbers[i] = byteCharacters.charCodeAt(i);
+		}
+		const byteArray = new Uint8Array(byteNumbers);
+		return new Blob([byteArray], { type: mimeType });
 	}
 
 	return (
@@ -149,21 +158,22 @@ const DesignConfigurator = ({
 						className="pointer-events-none relative z-50 aspect-[896/1831] w-full"
 					>
 						<NextImage
-							src={"/assets/phone-template.png"}
-							width={imageDimension.width}
-							height={imageDimension.height}
+							fill
 							alt="phone image"
+							src="/assets/phone-template.png"
 							className="pointer-events-none z-50 select-none"
 						/>
 					</AspectRatio>
 					<div className="absolute z-40 inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px] shadow-[0_0_0_99999px_rgba(229,231,235,0.6)]" />
 					<div
 						className={cn(
-							"absolute inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px]"
+							"absolute inset-0 left-[3px] top-px right-[3px] bottom-px rounded-[32px]",
+							`bg-${options.color.tw}`
 						)}
 						style={{ backgroundColor: options.color.value }}
 					/>
 				</div>
+
 				<Rnd
 					default={{
 						x: 150,
@@ -172,47 +182,49 @@ const DesignConfigurator = ({
 						width: imageDimension.width / 4,
 					}}
 					onResizeStop={(_, __, ref, ___, { x, y }) => {
-						setRenderPosition({
+						setRenderedDimension({
 							height: parseInt(ref.style.height.slice(0, -2)),
 							width: parseInt(ref.style.width.slice(0, -2)),
 						});
 
-						setRenderPosition({ x, y });
+						setRenderedPosition({ x, y });
 					}}
 					onDragStop={(_, data) => {
 						const { x, y } = data;
-						setRenderPosition({ x, y });
+						setRenderedPosition({ x, y });
 					}}
+					className="absolute z-20 border-[3px] border-primary"
 					lockAspectRatio
-					className="absolute z-20 border-[3px] border-teal-500"
 					resizeHandleComponent={{
-						topLeft: <HandleComponent />,
-						topRight: <HandleComponent />,
-						bottomLeft: <HandleComponent />,
 						bottomRight: <HandleComponent />,
+						bottomLeft: <HandleComponent />,
+						topRight: <HandleComponent />,
+						topLeft: <HandleComponent />,
 					}}
 				>
 					<div className="relative w-full h-full">
 						<NextImage
 							src={imageUrl}
-							width={imageDimension.width}
-							height={imageDimension.height}
+							fill
+							alt="your image"
 							className="pointer-events-none"
-							alt="upload image"
 						/>
 					</div>
 				</Rnd>
 			</div>
+
 			<div className="h-[37.5rem] w-full col-span-full lg:col-span-1 flex flex-col bg-white">
 				<ScrollArea className="relative flex-1 overflow-auto">
 					<div
 						aria-hidden="true"
 						className="absolute z-10 inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white pointer-events-none"
 					/>
+
 					<div className="px-8 pb-12 pt-8">
 						<h2 className="tracking-tight font-bold text-3xl">
 							Customize your case
 						</h2>
+
 						<div className="w-full h-px bg-zinc-200 my-6" />
 
 						<div className="relative mt-4 h-full flex flex-col justify-between">
@@ -243,20 +255,23 @@ const DesignConfigurator = ({
 												}
 											>
 												<span
-													style={{
-														backgroundColor: color.value,
-													}}
-													className="h-8 w-8 rounded-full border border-black border-opacity-10"
+													style={{ backgroundColor: color.value }}
+													className={cn(
+														`bg-${color.tw}`,
+														"h-8 w-8 rounded-full border border-black border-opacity-10"
+													)}
 												/>
 											</RadioGroup.Option>
 										))}
 									</div>
 								</RadioGroup>
+
 								<div className="relative flex flex-col gap-3 w-full">
+									<Label>Model</Label>
 									<DropdownMenu>
 										<DropdownMenuTrigger asChild>
 											<Button
-												variant={"outline"}
+												variant="outline"
 												role="combobox"
 												className="w-full justify-between"
 											>
@@ -275,24 +290,25 @@ const DesignConfigurator = ({
 																model.label === options.model.label,
 														}
 													)}
-													onClick={() =>
-														setOptions((prev) => ({ ...prev, model }))
-													}
+													onClick={() => {
+														setOptions((prev) => ({ ...prev, model }));
+													}}
 												>
-													{model.label}
 													<Check
 														className={cn(
-															"ml-4 h-4 w-4",
+															"mr-2 h-4 w-4",
 															model.label === options.model.label
 																? "opacity-100"
 																: "opacity-0"
 														)}
 													/>
+													{model.label}
 												</DropdownMenuItem>
 											))}
 										</DropdownMenuContent>
 									</DropdownMenu>
 								</div>
+
 								{[MATERIAL, FINISHES].map(
 									({ name, options: selectableOptions }) => (
 										<RadioGroup
@@ -325,16 +341,16 @@ const DesignConfigurator = ({
 														<span className="flex items-center">
 															<span className="flex flex-col text-sm">
 																<RadioGroup.Label
+																	className="font-medium text-gray-900"
 																	as="span"
-																	className={"font-medium text-gray-900"}
 																>
 																	{option.label}
 																</RadioGroup.Label>
 
 																{option.description ? (
 																	<RadioGroup.Description
-																		as={"span"}
-																		className={"text-gray-500"}
+																		as="span"
+																		className="text-gray-500"
 																	>
 																		<span className="block sm:inline">
 																			{option.description}
@@ -343,11 +359,10 @@ const DesignConfigurator = ({
 																) : null}
 															</span>
 														</span>
+
 														<RadioGroup.Description
 															as="span"
-															className={
-																"mt-12 flex text-sm sm:ml-4 sm:mt-0 sm:flex-col sm:text-right"
-															}
+															className="mt-2 flex text-sm sm:ml-4 sm:mt-0 sm:flex-col sm:text-right"
 														>
 															<span className="font-medium text-gray-900">
 																{formatPrice(option.price / 100)}
@@ -363,10 +378,11 @@ const DesignConfigurator = ({
 						</div>
 					</div>
 				</ScrollArea>
+
 				<div className="w-full px-8 h-16 bg-white">
 					<div className="h-px w-full bg-zinc-200" />
 					<div className="w-full h-full flex justify-end items-center">
-						<div className="w-full flex gap-6">
+						<div className="w-full flex gap-6 items-center">
 							<p className="font-medium whitespace-nowrap">
 								{formatPrice(
 									(BASE_PRICE + options.finish.price + options.material.price) /

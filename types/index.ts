@@ -56,6 +56,11 @@ export const STEPS = [
 	},
 ];
 
+// bg-blue-950 border-blue-950
+// bg-zinc-900 border-zinc-900
+// bg-rose-950 border-rose-950
+// bg-slate-300 border-slate-300
+
 export const COLORS = [
 	{ label: "Black", value: "black", tw: "zinc-900" },
 	{ label: "Slate", value: "white", tw: "slate-500" },
