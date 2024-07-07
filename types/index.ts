@@ -32,6 +32,11 @@ export const qualityInfo = [
 	"5 year print warranty",
 ];
 
+export const materialInfo = [
+	'High-quality "soft touch" silicone',
+	"Scratch and fingerprint resistant coating",
+];
+
 export const footerLinks = [
 	{ title: "Terms", url: "/terms" },
 	{ title: "Privacy Policy", url: "/privacy-policy" },

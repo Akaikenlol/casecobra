@@ -7,6 +7,7 @@ import Phone from "./Phone";
 import { COLORS, MODELS } from "@/types";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
+import InfoCard from "./InfoCard";
 
 const DesignPreview = ({ configuration }: DesignPreviewProps) => {
 	const [showConfetti, setShowConfetti] = useState(false);
@@ -50,15 +51,7 @@ const DesignPreview = ({ configuration }: DesignPreviewProps) => {
 						In stock and ready to ship
 					</div>
 				</div>
-
-				<div className=" sm:col-span-12 md:col-span-9 text-base">
-					<div className="grid grid-cols-1 gap-y-8 border-b border-gray-300 py-8 sm:grid-cols-2 sm: gap-x-6 sm:py-6 md:py-10">
-						<div>
-							<p className="font-medium text-zinc-950">Highlights</p>
-							<ol className="mt-3 text-zinc-700 list-disc list-inside"></ol>
-						</div>
-					</div>
-				</div>
+				<InfoCard configuration={configuration} />
 			</div>
 		</>
 	);
