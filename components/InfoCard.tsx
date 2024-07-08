@@ -4,8 +4,15 @@ import { BASE_PRICE, materialInfo, PRODUCT_PRICES, qualityInfo } from "@/types";
 import React from "react";
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { createCheckoutSession } from "@/lib/actions/payment.action";
+import { useRouter } from "next/navigation";
+import { useToast } from "./ui/use-toast";
 
 const InfoCard = ({ configuration }: DesignPreviewProps) => {
+	const router = useRouter();
+	const { toast } = useToast();
+
 	const { color, model, finish, material } = configuration;
 
 	let totalPrice = BASE_PRICE;
@@ -15,6 +22,23 @@ const InfoCard = ({ configuration }: DesignPreviewProps) => {
 	if (finish === "textured") {
 		totalPrice += PRODUCT_PRICES.finish.textured;
 	}
+
+	const { mutate: createPaymentSession } = useMutation({
+		mutationKey: ["get-checkout-session"],
+		mutationFn: createCheckoutSession,
+		onSuccess: ({ url }) => {
+			if (url) router.push(url);
+			else throw new Error("Unable to retrieve payment URL");
+		},
+		onError: () => {
+			toast({
+				title: "Something went wrong.",
+				description: "There was an error on our end. Please try again later.",
+				variant: "destructive",
+			});
+		},
+	});
+
 	return (
 		<div className=" sm:col-span-12 md:col-span-9 text-base">
 			<div className="grid grid-cols-1 gap-y-8 border-b border-gray-300 py-8 sm:grid-cols-2 sm: gap-x-6 sm:py-6 md:py-10">
@@ -78,6 +102,7 @@ const InfoCard = ({ configuration }: DesignPreviewProps) => {
 						// isLoading={true}
 						// disabled={true}
 						// loadingText="Loading"
+						onClick={() => createPaymentSession({ configId: configuration.id })}
 						className="px-4 sm:px-6 lg:px-8"
 					>
 						Check out <ArrowRight className="h-4 w-4 ml-1.5 inline" />
