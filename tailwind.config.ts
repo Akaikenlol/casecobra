@@ -22,6 +22,7 @@ const config = {
 				black: "#18181B",
 				blue: "#172554",
 				rose: "#4C0519",
+				"default-color": "#3ded97",
 				// white: "#CBD5E1",
 				border: "hsl(var(--border))",
 				input: "hsl(var(--input))",
