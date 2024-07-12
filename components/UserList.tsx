@@ -1,5 +1,6 @@
 import { UserListProps } from "@/constants";
 import Image from "next/image";
+import React from "react";
 
 const UserList: React.FC<UserListProps> = ({
 	imageUrls,

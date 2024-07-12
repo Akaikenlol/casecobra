@@ -18,16 +18,12 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "./ui/button";
-import { ArrowRight, Check, ChevronsUpDown, Radio } from "lucide-react";
+import { ArrowRight, Check, ChevronsUpDown } from "lucide-react";
 import { formatPrice } from "@/lib/formatPrice";
-import { base64ToBlob } from "@/lib/base64ToBlob";
 import { useUploadThing } from "@/lib/uploadthings";
 import { useToast } from "./ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
-import {
-	saveConfig as _saveConfig,
-	saveConfig,
-} from "@/lib/actions/design.action";
+import { saveConfig as _saveConfig } from "@/lib/actions/design.action";
 import { useRouter } from "next/navigation";
 
 const DesignConfigurator = ({
@@ -38,7 +34,7 @@ const DesignConfigurator = ({
 	const { toast } = useToast();
 	const router = useRouter();
 
-	const { mutate: saveConfig, isPending } = useMutation({
+	const { mutate: saveConfig } = useMutation({
 		mutationKey: ["save-config"],
 		mutationFn: async (args: saveConfigProps) => {
 			await Promise.all([saveConfiguration(), _saveConfig(args)]);

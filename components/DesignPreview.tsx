@@ -28,15 +28,11 @@ const DesignPreview = ({ configuration }: DesignPreviewProps) => {
 	const [showConfetti, setShowConfetti] = useState<boolean>(false);
 	useEffect(() => setShowConfetti(true));
 
-	const { color, model, finish, material } = configuration;
+	const { color, finish, material } = configuration;
 
 	const tw = COLORS.find(
 		(supportedColor) => supportedColor.value === color
 	)?.tw;
-
-	const { label: modelLabels } = MODELS.options.find(
-		({ value }) => value === model
-	)!;
 
 	let totalPrice = BASE_PRICE;
 	if (material === "polycarbonate")

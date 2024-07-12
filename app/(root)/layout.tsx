@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Inter, Recursive } from "next/font/google";
+import { Recursive } from "next/font/google";
 import Navbar from "@/components/Navbar";
 import "../globals.css";
 import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import Provider from "@/components/Provider";
+import React from "react";
 
 const recursive = Recursive({ subsets: ["latin"] });
 
