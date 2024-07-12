@@ -39,7 +39,10 @@ export interface ReviewProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export interface searchParamsProps {
-	[key: string]: string | string[] | undefined;
+	// [key: string]: string | string[] | undefined;
+	searchParams: {
+		id?: string | string[];
+	};
 }
 
 export interface DesignConfiguratorProps {
