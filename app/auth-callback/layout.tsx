@@ -1,3 +1,4 @@
+import Provider from "@/components/Provider";
 import React from "react";
 
 export const metadata = {
@@ -12,7 +13,9 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en">
-			<body>{children}</body>
+			<body>
+				<Provider>{children}</Provider>
+			</body>
 		</html>
 	);
 }
