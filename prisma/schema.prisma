@@ -84,7 +84,7 @@ model ShippingAddress {
   name              String
   street            String
   city              String
-  country     String
+  country           String
   postalCode        String
   state             String?
   phoneNumber       String?

@@ -1,7 +1,5 @@
 import React from "react";
 import MaxWidthWrapper from "./MaxWidthWrapper";
-import { Icons } from "./Icons";
-import Image from "next/image";
 import Phone from "./Phone";
 import { qualityInfo } from "@/types";
 import { ArrowRight, Check } from "lucide-react";

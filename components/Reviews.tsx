@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React from "react";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import Image from "next/image";
 import ReviewGrid from "./ReviewGrid";

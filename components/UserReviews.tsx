@@ -2,7 +2,6 @@ import React from "react";
 import Image from "next/image";
 import Rating from "./Rating";
 import { Check } from "lucide-react";
-import { UserListProps } from "@/constants";
 
 interface UserReviewsProps {
 	imageUrl: string;
