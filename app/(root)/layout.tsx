@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import Provider from "@/components/Provider";
+import "../globals.css";
 
 const recursive = Recursive({ subsets: ["latin"] });
 
@@ -14,14 +15,14 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={recursive.className}>
-				<Provider>
-					<Navbar />
-					<main className="flex grainy-light flex-col min-h-[calc(100vh-3.5rem-1px)]">
-						<div className="flex-1 flex flex-col h-full">{children}</div>
-						<Footer />
-					</main>
-					<Toaster />
-				</Provider>
+				<Navbar />
+				<main className="flex grainy-light flex-col min-h-[calc(100vh-3.5rem-1px)]">
+					<div className="flex-1 flex flex-col h-full">
+						<Provider>{children}</Provider>
+					</div>
+					<Footer />
+				</main>
+				<Toaster />
 			</body>
 		</html>
 	);
