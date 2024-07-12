@@ -1,5 +1,6 @@
 import Provider from "@/components/Provider";
 import React from "react";
+import "../globals.css";
 
 export const metadata = {
 	title: "Next.js",
