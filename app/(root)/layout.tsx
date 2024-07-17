@@ -4,8 +4,11 @@ import Footer from "@/components/Footer";
 import { Toaster } from "@/components/ui/toaster";
 import Provider from "@/components/Provider";
 import "../globals.css";
+import { constructMetaData } from "@/lib/constructMetaData";
 
 const recursive = Recursive({ subsets: ["latin"] });
+
+export const metadata = constructMetaData();
 
 export default function RootLayout({
 	children,
