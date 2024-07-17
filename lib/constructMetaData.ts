@@ -27,5 +27,6 @@ export function constructMetaData({
 			creator: "@keithken",
 		},
 		icons,
+		metadataBase: new URL("https://casecobra-beige.vercel.app/"),
 	};
 }
